@@ -39,6 +39,12 @@ export class PaymentResponseDto {
   @ApiPropertyOptional({ nullable: true })
   failureCode!: string | null;
 
+  @ApiProperty({
+    description:
+      'Whether the client may retry or poll this payment without creating a new intent.',
+  })
+  retryable!: boolean;
+
   @ApiPropertyOptional({
     description:
       'Unsigned transaction XDR, returned when a payment is created.',

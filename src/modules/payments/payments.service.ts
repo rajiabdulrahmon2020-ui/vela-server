@@ -382,5 +382,6 @@ function toPaymentResponse(payment: {
     expiresAt: payment.expiresAt?.toISOString() ?? null,
     stellarTxHash: payment.stellarTxHash,
     failureCode: payment.failureCode,
+    retryable: payment.status === PaymentStatus.SUBMITTED,
   };
 }

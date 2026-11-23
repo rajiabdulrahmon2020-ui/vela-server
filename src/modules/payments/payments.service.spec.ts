@@ -358,6 +358,7 @@ describe('PaymentsService.submit', () => {
     });
 
     expect(result.status).toBe('SUBMITTED');
+    expect(result.retryable).toBe(true);
     expect(repo.markFailed).not.toHaveBeenCalled();
   });
 
