@@ -440,6 +440,34 @@ describe('StellarService', () => {
       ).not.toThrow();
     });
 
+    it('rejects a testnet payment using a USDC issuer from another network', () => {
+      const transaction = new TransactionBuilder(
+        new Account(SOURCE_PUBLIC_KEY, '1'),
+        {
+          fee: '100',
+          networkPassphrase: Networks.TESTNET,
+        },
+      )
+        .addOperation(
+          Operation.payment({
+            destination: DESTINATION_PUBLIC_KEY,
+            asset: new Asset('USDC', DESTINATION_PUBLIC_KEY),
+            amount: '1',
+          }),
+        )
+        .setTimeout(30)
+        .build();
+
+      expect(() =>
+        service.validatePaymentTransaction(transaction.toXDR(), {
+          sourcePublicKey: SOURCE_PUBLIC_KEY,
+          destination: DESTINATION_PUBLIC_KEY,
+          asset: 'USDC',
+          amount: '1',
+        }),
+      ).toThrow(BadRequestException);
+    });
+
     it('rejects a transaction whose destination or amount differs', () => {
       const transaction = new TransactionBuilder(
         new Account(SOURCE_PUBLIC_KEY, '1'),
